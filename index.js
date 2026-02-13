@@ -1,6 +1,5 @@
-const btnJogar = document.getElementById("btn-jogar")
 const jogar = document.getElementById("jogar")
-const visivel = document.getElementById("jogo-visivel")
+const visivel = document.getElementById("Game")
 const aparecerConfig = document.getElementById("aparecer-config")
 const jogo = document.getElementById("jogo")
 const darkmode = document.getElementById('fundo-darkmode')
@@ -17,20 +16,23 @@ const alternativa2 = document.getElementById("alternativa2")
 const alternativa3 = document.getElementById("alternativa3")
 const alternativa4 = document.getElementById("alternativa4")
 const opcoes = document.getElementById("opcoes")
-const vidas = document.querySelectorAll(".vida")
 const vida1 = document.getElementById("vida1")
 const vida2 = document.getElementById("vida2")
 const vida3 = document.getElementById("vida3")
 const acertos = document.getElementById("acertos")
+const gameOver = document.getElementById("GameOver")
+const btnReiniciar = document.getElementById("btn-reiniciar")
 
 let correto = 0
-
+gameOver.classList.add('btn-reiniciar')
+visivel.classList.add('Game')
 
 // iniciar jogo ao clicae no botao "Jogar"
 jogar.addEventListener("click", () => {
     jogar.classList.toggle('remove')
-    visivel.classList.remove('jogo-visivel')
+    visivel.classList.remove('Game')
     opcoes.classList.toggle('on')
+    
 })
 
 // abrir aba de configurações
@@ -75,33 +77,28 @@ darkmode.addEventListener("click", () => {
 })
 
 
+let paises = [];
 //  rodar jogo
 document.addEventListener("DOMContentLoaded", () => {
-  const respostas = [
-    { nome: "Brasil", url: "bandeiras/brasil.png" },
-    { nome: "Haiti", url: "bandeiras/haiti.png" },
-    { nome: "Jamaica", url: "bandeiras/jamaica.png" },
-    { nome: "Portugal", url: "bandeiras/portugal.png" }
-  ];
 
   const alternativas = document.querySelectorAll(".alternativas");
   const pergunta = document.getElementById("pergunta");
 
   let respostaCorreta = null;
-  let tentativas = 3;
   let bloqueado = false;
+  let tentativas = 3;
+  
 
   function novaRodada() {
+    if (paises.length === 0) return;
+
     visivel.classList.remove('jogo-visivel')
-    vida1.src = "vidas/vida.png"
-    vida2.src = "vidas/vida.png"
-    vida3.src = "vidas/vida.png"
 
     bloqueado = false;
-    tentativas = 3;
 
     alternativas.forEach(div => {
       div.innerHTML = "";
+      div.classList.remove("usado");
       div.style.backgroundColor = "";
     });
 
@@ -128,9 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
   alternativas.forEach(div => {
     div.addEventListener("click", () => {
       if (bloqueado) return;
+      if (div.classList.contains("usado")) return;
 
       if (div.dataset.nome === respostaCorreta.nome) {
         div.style.backgroundColor = "green";
+        div.classList.add("usado");
         bloqueado = true;
         correto++
         acertos.innerText = `acertos: ${correto}`
@@ -138,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         tentativas--;
         div.style.backgroundColor = "red";
+        div.classList.add("usado");
         if (tentativas === 2) {
           vida1.src = "vidas/noVida.png"
         }
@@ -149,13 +149,42 @@ document.addEventListener("DOMContentLoaded", () => {
           acertos.innerText = `acertos: ${correto}`
           vida3.src = "vidas/noVida.png"
           bloqueado = true;
-          visivel.classList.add('jogo-visivel')
-
-          setTimeout(novaRodada, 1000);
+          visivel.classList.add('Game')
+          gameOver.classList.remove('btn-reiniciar')
+          btnReiniciar.addEventListener("click", () => {
+            tentativas = 3
+            visivel.classList.remove('Game')
+            gameOver.classList.add('btn-reiniciar')
+            novaRodada()
+            vida1.src = "vidas/vida.png"
+            vida2.src = "vidas/vida.png"
+            vida3.src = "vidas/vida.png"
+          })
         }
       }
     });
   });
-
   novaRodada();
 });
+  
+fetch("https://restcountries.com/v3.1/all?fields=name,flags")
+  .then(res => res.json())
+  .then(data => {
+
+    if (!Array.isArray(data)) {
+      console.error("Resposta inesperada:", data);
+      return;
+    }
+
+    paises = data.map(pais => ({
+      nome: pais.name.common,
+      url: pais.flags.png
+    }));
+
+    console.log("Países carregados:", paises.length);
+
+    novaRodada();
+  })
+  .catch(error => {
+    console.error("Erro ao carregar países:", error);
+  });

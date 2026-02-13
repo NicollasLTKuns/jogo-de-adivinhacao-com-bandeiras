@@ -63,10 +63,13 @@ main{
     border: 2.5px solid black;
     border-radius: 15px;
 }
-.jogo-visivel, .aparecer-config, .jogo{
+
+#jogo .Game, .aparecer-config, .jogo{
     display: none;
 }
-
+#jogo .btn-reiniciar{
+    display: none;
+}
 #info-jogo, #cabeçalho-config{
     display: flex;
     font-size: 20px;
@@ -117,16 +120,14 @@ main{
     align-items: center;
     justify-content: center;
 }
-.certo{
-    background-color: aqua;
-}
-#jogar{
+
+#jogar, #GameOver{
     height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#btn-jogar{
+#btn-jogar, #btn-reiniciar{
     height: 100px;
     width: 250px;
     border: 2.5px solid black;
@@ -140,10 +141,10 @@ main{
     cursor: pointer;
     transition: .3s;
 }
-#btn-jogar:hover{
+#btn-reiniciar:hover, #btn-jogar:hover{
     scale: 1.05;
 }
-#btn-jogar:active{
+#btn-reiniciar:active, #btn-jogar:active{
     scale: .9;
 }
 #jogo .remove{
@@ -201,6 +202,6 @@ body.dark{
     background-color: #3c3c3c;
     color: #fff;
 }
-#cabeçalho-config.dark , #info-jogo.dark , #jogo.dark , #configuracoes.dark , .alternativas.dark{
+#cabeçalho.dark, #cabeçalho-config.dark , #info-jogo.dark , #jogo.dark , #configuracoes.dark , .alternativas.dark{
     border: 2.5px solid white;
 }
