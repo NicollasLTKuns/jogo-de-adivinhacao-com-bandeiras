@@ -21,6 +21,9 @@ const vidas = document.querySelectorAll(".vida")
 const vida1 = document.getElementById("vida1")
 const vida2 = document.getElementById("vida2")
 const vida3 = document.getElementById("vida3")
+const acertos = document.getElementById("acertos")
+
+let correto = 0
 
 
 // iniciar jogo ao clicae no botao "Jogar"
@@ -89,6 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let bloqueado = false;
 
   function novaRodada() {
+    visivel.classList.remove('jogo-visivel')
+    vida1.src = "vidas/vida.png"
+    vida2.src = "vidas/vida.png"
+    vida3.src = "vidas/vida.png"
+
     bloqueado = false;
     tentativas = 3;
 
@@ -115,13 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    //tentar fazer mudar o incone dos corações quando errar a bandeira 
-    vida1.forEach(div => {
-      if (tentativas === 2){
-        const img = document.createElement("img")
-         
-      }
-    })
   }
 
   alternativas.forEach(div => {
@@ -131,15 +132,26 @@ document.addEventListener("DOMContentLoaded", () => {
       if (div.dataset.nome === respostaCorreta.nome) {
         div.style.backgroundColor = "green";
         bloqueado = true;
+        correto++
+        acertos.innerText = `acertos: ${correto}`
         setTimeout(novaRodada, 1000);
       } else {
         tentativas--;
         div.style.backgroundColor = "red";
-
+        if (tentativas === 2) {
+          vida1.src = "vidas/noVida.png"
+        }
+        if (tentativas === 1) {
+          vida2.src = "vidas/noVida.png"
+        }
         if (tentativas === 0) {
+          correto = 0
+          acertos.innerText = `acertos: ${correto}`
+          vida3.src = "vidas/noVida.png"
           bloqueado = true;
+          visivel.classList.add('jogo-visivel')
 
-          setTimeout(novaRodada, 3000);
+          setTimeout(novaRodada, 1000);
         }
       }
     });
@@ -147,45 +159,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   novaRodada();
 });
-
-
-
-// // cria uma cópia da lista para não repetir imagens
-// let respostasEmbaralhadas = [...respostas].sort(() => Math.random() - 0.5);
-
-// alternativas.forEach((div, index) => {
-//   const img = document.createElement("img");
-//   img.src = respostasEmbaralhadas[index].url;
-//   img.style.height = "60px";
-
-//   // guarda a resposta correta dentro do elemento
-//   div.dataset.resposta = respostasEmbaralhadas[index].nome;
-
-//   div.appendChild(img);
-// });
-
-  // const respostas = [
-  //     {nome:"brasil", URL: "bandeiras/brasil.png" },
-  //     {nome:"haiti", URL: "bandeiras/haiti.png"},
-  //     {nome:"jamaica", URL: "bandeiras/jamaica.png"},
-  //     {nome:"portugal", URL: "bandeiras/portugal.png"},
-  // ]
-  
-  // const alternativas = document.querySelectorAll(".alternativas")
-  // const pergunta = document.getElementById("pergunta")
-  
-  // pergunta.textContent = respostaCorreta.nome
-  
-  // const respostaCorreta = embaralhadas[Math.floor(Math.random() * embaralhadas.length)]
-  
-  // let respostasEmbaralhadas = [...respostas].sort(() => Math.random() - 0.5);
-  
-  // alternativas.forEach((div, index) => {
-  //     const img = document.createElement("img")
-  //     img.src = respostasEmbaralhadas[index].URL
-  //     img.style.height = "60px"
-  
-  //     div.dataset.resposta = respostasEmbaralhadas[index].nome
-  
-  //     div.appendChild(img)
-  // })
