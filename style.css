@@ -110,8 +110,8 @@ main{
     margin-bottom: 50px;
 }
 .alternativas{
-    height: 150px;
-    width: 150px;
+    height: 20vh;
+    width: 10vw;
     border: 2.5px solid black;
     border-radius: 15px;
     margin: 30px;

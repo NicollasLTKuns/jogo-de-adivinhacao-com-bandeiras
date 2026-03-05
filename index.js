@@ -76,8 +76,6 @@ darkmode.addEventListener("click", () => {
     }
 })
 
-
-let paises = [];
 //  rodar jogo
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -166,25 +164,3 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   novaRodada();
 });
-  
-fetch("https://restcountries.com/v3.1/all?fields=name,flags")
-  .then(res => res.json())
-  .then(data => {
-
-    if (!Array.isArray(data)) {
-      console.error("Resposta inesperada:", data);
-      return;
-    }
-
-    paises = data.map(pais => ({
-      nome: pais.name.common,
-      url: pais.flags.png
-    }));
-
-    console.log("Países carregados:", paises.length);
-
-    novaRodada();
-  })
-  .catch(error => {
-    console.error("Erro ao carregar países:", error);
-  });
