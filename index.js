@@ -86,6 +86,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let bloqueado = false;
   let tentativas = 3;
   
+  let respostas = [];
+  let paises = [];
+
+  fetch("https://restcountries.com/v3.1/all?fields=name,flags")
+  .then(res => res.json())
+  .then(data => {
+    respostas = data.map(pais => ({
+      nome: pais.name.common,
+      url: pais.flags.png
+    }));
+
+    paises = respostas;
+    novaRodada();
+  });
 
   function novaRodada() {
     if (paises.length === 0) return;
@@ -100,7 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
       div.style.backgroundColor = "";
     });
 
-    const embaralhadas = [...respostas].sort(() => Math.random() - 0.5);
+    const embaralhadas = [...respostas]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 4)
 
     respostaCorreta =
       embaralhadas[Math.floor(Math.random() * embaralhadas.length)];
@@ -110,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
     alternativas.forEach((div, i) => {
       const img = document.createElement("img");
       img.src = embaralhadas[i].url;
-      img.style.width = "100px";
 
       div.dataset.nome = embaralhadas[i].nome;
 
@@ -162,5 +177,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
-  novaRodada();
 });

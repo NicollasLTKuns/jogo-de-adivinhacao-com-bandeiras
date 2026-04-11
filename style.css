@@ -114,11 +114,18 @@ main{
     width: 10vw;
     border: 2.5px solid black;
     border-radius: 15px;
-    margin: 30px;
+    margin: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
+
+.alternativas img{
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
 }
 
 #jogar, #GameOver{
