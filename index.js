@@ -16,12 +16,7 @@ const alternativa2 = document.getElementById("alternativa2")
 const alternativa3 = document.getElementById("alternativa3")
 const alternativa4 = document.getElementById("alternativa4")
 const opcoes = document.getElementById("opcoes")
-const vida1 = document.getElementById("vida1")
-const vida2 = document.getElementById("vida2")
-const vida3 = document.getElementById("vida3")
-const acertos = document.getElementById("acertos")
 const gameOver = document.getElementById("GameOver")
-const btnReiniciar = document.getElementById("btn-reiniciar")
 
 let correto = 0
 gameOver.classList.add('btn-reiniciar')
@@ -52,17 +47,14 @@ fecharJanela.addEventListener("click", () =>{
 
 //  colocar ou tirar pagina no modo escuro
 darkmode.addEventListener("click", () => {
-    darkmode.classList.toggle('dark')
-    cabecalho.classList.toggle('dark')
-    body.classList.toggle('dark')
-    jogo.classList.toggle('dark')
-    infoJogo.classList.toggle('dark')
-    config.classList.toggle('dark')
-    alternativa1.classList.toggle('dark')
-    alternativa2.classList.toggle('dark')
-    alternativa3.classList.toggle('dark')
-    alternativa4.classList.toggle('dark')
-    cabecalhoConfig.classList.toggle('dark')
+    [
+      darkmode,
+      cabecalho,
+      body,
+      jogo,
+      infoJogo,
+      config
+    ].forEach(el => el.classList.toggle("dark"))
 
     if (btnConfig.src.includes('icons/preto.png')){
         btnConfig.src = 'icons/branco.png'
@@ -92,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("https://restcountries.com/v3.1/all?fields=name,flags")
   .then(res => res.json())
   .then(data => {
-    respostas = data.map(pais => ({
+    respostas = data.map(pais => ({ 
       nome: pais.name.common,
       url: pais.flags.png
     }));
@@ -136,6 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   alternativas.forEach(div => {
+    const vida1 = document.getElementById("vida1")
+    const vida2 = document.getElementById("vida2")
+    const vida3 = document.getElementById("vida3")
+    const acertos = document.getElementById("acertos")
+    const btnReiniciar = document.getElementById("btn-reiniciar")
     div.addEventListener("click", () => {
       if (bloqueado) return;
       if (div.classList.contains("usado")) return;
